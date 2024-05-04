@@ -1,0 +1,14 @@
+#include <string>
+#include <vector>
+
+using namespace std;
+
+vector<int> solution(vector<int> num_list, int n) {
+    vector<int> answer;
+    if(n>=1&&n<=4){
+        for(int j=0;j<num_list.size();j=j+n){
+            answer.push_back(num_list[j]);
+        }
+    }
+    return answer;
+}
