@@ -1,0 +1,16 @@
+#include <string>
+#include <iostream>
+
+using namespace std;
+
+string solution(string my_string, string overwrite_string, int s) {
+    string answer = "";
+    int i=overwrite_string.size()+s;
+    answer+=my_string.substr(0,s);
+    answer+=overwrite_string;
+    
+    if(i<my_string.size()){
+        answer+=my_string.substr(i);
+    }
+    return answer;
+}
