@@ -29,8 +29,6 @@ int solution(vector<int> bandage, int health, vector<vector<int>> attacks) {
     
     // 위 사이클은 현재가 공격 타이밍이 아닐때만 진행한다
     
-    // 브레이크 포인트 찍어보기
-    
     for(int i=1;i<a;i++){
         int time2=attacks[i][0]-attacks[i-1][0]-1;
         int j=bandage[1]*bandage[0];
