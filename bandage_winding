@@ -4,19 +4,19 @@
 using namespace std;
 
 int solution(vector<int> bandage, int health, vector<vector<int>> attacks) {
-    int answer=0;
+    int answer=health;
     // int answer = health - attacks[0][1]; //첫 공격으로 인한 체력 감소 (확정)
     int time = attacks[attacks.size() - 1][0]; // 마지막 공격 시간 (11초)
-    int count=1;
+    int count=0;
     int con_heal=0; // 연속 회복한 횟수
 
-    for (int i = 0; i <= time; i++) { // 전체 시간
+    for (int i = 1; i <= time; i++) { // 전체 시간
         if (i != attacks[count][0]) { // 현재 시간이 공격시간이 아니라면 회복
-            ++con_heal; // 연속 회복 횟수 증가
-            answer=answer+bandage[1]; // 기본 회복
+            con_heal++; // 연속 회복 횟수 증가
+            answer+=bandage[1]; // 기본 회복
             if(con_heal==bandage[0]){ // 만약 이번에 시전 시간을 꽉 채워 붕대를 감았다면
-                con_heal=0; // 연속 회복 카운트 초기화
                 answer+=bandage[2]; // 추가 회복량
+                con_heal=0; // 연속 회복 카운트 초기화
             }
             // else{// 만약 시전시간을 아직 꽉 채우지 못했다면 (con_heal!=bandage[0])
             //     con_heal++;
@@ -47,12 +47,12 @@ int solution(vector<int> bandage, int health, vector<vector<int>> attacks) {
             }
         }
         else { // 현재 시간이 공격시간이라면 차감
-            answer = answer - attacks[count][1];
+            answer-=attacks[count][1];
             count++;
             con_heal=0; // 연속 회복 횟수 초기화
             if (answer <= 0) { // 만약 체력이 0이 됐다면 -1로 값바꾸고 for문 즉시 종료
                 answer=-1;
-                return answer;
+                break;
             }
         }
     }
