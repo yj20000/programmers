@@ -1,56 +1,60 @@
-#include <string>
+#include <iostream>
 #include <vector>
 
 using namespace std;
 
 int solution(vector<int> bandage, int health, vector<vector<int>> attacks) {
-    // int time=bandage[0]; // 회복 시전 시간
-    // int heal=bandage[1]; // 초당 회복량
-    // int heal_plus=bandage[2]; // 추가 회복량
-    
-    // attacks[0][0] : 첫 공격이 시작된 시점
-    // attacks[attacks.size()-1][0] : 마지막 공격이 들어온 시점
-    // 처음에 주어진 health가 최대 체력이므로,
-    // 공격이 들어오기 전까지는 health에 변동이 없으므로
-    // 처음으로 공격이 들어온 시점~마지막 공격이 들어온 시점
-    // 사이를 연산하면 된다
-    
-    int answer=health-attacks[0][1]; //첫 공격으로 인한 체력 감소 (확정)
-    int a=attacks[attacks.size()-1][0];
-    // 첫 체력 감소(현재) 이후 ~ 두번째 공격(다음) 사이의 초를 연산,
-    // attacks[i-1][0]+1 ~ attacks[i][0]
-    // 1. 만약 해당 시간이 회복 주기보다 길거나 같다면
-    // 현재 health+
-    // 초당 회복량*시전시간 + 추가 회복량
-    // + 초당 회복량*(다음 공격 시점-현재 공격)
-    // 2. 만약 해당 시간이 회복 주기보다 짧다면
-    // 현재 health+
-    // 초당 회복량*(다음 공격 시점-현재 공격)
-    
-    // 위 사이클은 현재가 공격 타이밍이 아닐때만 진행한다
-    
-    for(int i=1;i<a;i++){
-        int time2=attacks[i][0]-attacks[i-1][0]-1;
-        int j=bandage[1]*bandage[0];
-        int k=bandage[1]*time2;
-        if(time2>0){
-            if(time2>=bandage[0]){ // 1번
-                answer=answer+j+bandage[2]+k;
+    int answer=0;
+    // int answer = health - attacks[0][1]; //첫 공격으로 인한 체력 감소 (확정)
+    int time = attacks[attacks.size() - 1][0]; // 마지막 공격 시간 (11초)
+    int count=1;
+    int con_heal=0; // 연속 회복한 횟수
+
+    for (int i = 0; i <= time; i++) { // 전체 시간
+        if (i != attacks[count][0]) { // 현재 시간이 공격시간이 아니라면 회복
+            ++con_heal; // 연속 회복 횟수 증가
+            answer=answer+bandage[1]; // 기본 회복
+            if(con_heal==bandage[0]){ // 만약 이번에 시전 시간을 꽉 채워 붕대를 감았다면
+                con_heal=0; // 연속 회복 카운트 초기화
+                answer+=bandage[2]; // 추가 회복량
             }
-            else{ //2번
-                answer=answer+k;
-            }        
-            if(answer>health){ // 체력이 상한을 넘어간다면 기준치로 고정
-                answer=health;
+            // else{// 만약 시전시간을 아직 꽉 채우지 못했다면 (con_heal!=bandage[0])
+            //     con_heal++;
+            //     answer=answer+bandage[1];
+            // }
+            // int time2 = attacks[count][0] - attacks[count - 1][0] - 1; //다음 공격 시간(최대 11초) - 현재 공격당한 시간
+            // int a=time2 / bandage[0];
+            // int b= time%bandage[0];
+            // 공격을 받는 시간들 사이의 간격을 계산하여
+            // 1. 해당 시간이 회복의 시전시간보다 길면 (time2>bandage[0])
+            // if (a>=1) {
+                // 시전시간에 따른 초당 회복량에 더불어 추가 회복량을 얻을 수 있다
+                // bandage[0]*bandage[1]+bandage[2]
+                //int con_heal; // 연속으로 시전시간을 꽉 채워 회복한 횟수를 찾을 for문과 그 값을 저장할 con_heal
+                // for (int k = 0; k < time2 / bandage[0]; k++) {
+                //     con_heal = k;
+                // }
+                // 연속 회복한 횟수(con_heal)*연속 회복에 따른 회복량 + 남은 시간(time2%bandage[0])*초당 회복량 
+                // answer = answer + con_heal * (bandage[0] * bandage[1] + bandage[2]) + b * bandage[1];
+                // i=i+time+1;
+            // }
+            // else {
+            //     // 2. 그렇지 않다면 (이하라면), 추가 회복량을 받지 않고 초당 회복량만 계산한다
+            //     answer = answer + bandage[1] * time2;
+            // }
+            if (answer > health) { // 체력이 상한을 넘어간다면 기준치로 고정
+                answer = health;
             }
         }
-        answer=answer-attacks[i][1];
-        if(answer<=0){ // 만약 체력이 0이 됐다면 for문 즉시 종료
-            break;
+        else { // 현재 시간이 공격시간이라면 차감
+            answer = answer - attacks[count][1];
+            count++;
+            con_heal=0; // 연속 회복 횟수 초기화
+            if (answer <= 0) { // 만약 체력이 0이 됐다면 -1로 값바꾸고 for문 즉시 종료
+                answer=-1;
+                return answer;
+            }
         }
     }
-    if(answer<=0){ // 체력이 0일 경우 -1을 반환하도록 함
-        answer=-1;
-    }   
     return answer;
 }
