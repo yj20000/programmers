@@ -1,0 +1,152 @@
+#include <iostream>
+
+using namespace std;
+
+class Animal {
+private:
+    string species="X";
+    string name="X";
+    string color="X";
+
+public:
+    void getName() {
+        cout<< name<<endl;
+    }
+
+    void getSpecies() {
+        cout<<species<<endl;
+    }
+
+    void getColor() {
+        cout<<color<<endl;
+    }
+
+    void cry() {
+        cout << "none" << endl;
+    }
+};
+
+class Cat : public Animal {
+private:
+    string species = "Cat";
+
+public:
+    void getSpecies() {
+        cout << species << endl;
+    }
+    void cry() {
+        cout << "meow" << endl;
+    }
+    void kneading() {
+        cout << "cat's kneading" << endl;
+    }
+};
+
+class persian : public Cat {
+private:
+    string name = "persian";
+    string color = "white";
+public:
+    void getColor() {
+        cout<<color<<endl;
+    }
+};
+
+class siam : public Cat {
+private:
+    string name = "siam";
+    string color = "grey";
+public:
+    void getName() {
+        cout << name << endl;
+    }
+};
+
+class Dog : public Animal {
+public:
+    string species = "doggy";
+
+    void getSpecies() {
+        cout << species << endl;
+    }
+    void cry() {
+        cout << "bark" << endl;
+    }
+    void wagging() {
+        cout << "dog's wagging" << endl;
+    }
+};
+
+class poodle : public Dog {
+private:
+    string name="poodle";
+    string color = "brown";
+public:
+    void wagging() {
+        cout << "puddle's wagging" << endl;
+    }
+
+};
+
+class jindo : public Dog {
+private:
+    string name = "jindo";
+    string color = "white";
+public:
+   void getSpeices() {
+        cout << species << endl;
+    }
+
+
+};
+
+int main() {
+    Animal* A = new Animal;
+    A->getColor();
+    A->cry();
+
+    cout << endl;
+
+    Cat* C = new Cat;
+    C->getSpecies();
+    C->cry();
+
+    cout << endl;
+
+    Dog* D = new Dog;
+    D->getSpecies();
+    D->cry();
+
+    cout << endl;
+
+    persian* P = new persian;
+    P->getSpecies();
+    P->getColor();
+    P->getName();
+    P->cry();
+
+    cout << endl;
+
+    siam* S = new siam;
+    S->getColor();
+    S->getName();
+    S->kneading();
+
+    cout << endl;
+
+    poodle* PO = new poodle;
+    PO->getSpecies();
+    PO->getColor();
+    PO->getName();
+    PO->cry();
+
+    cout << endl;
+
+    jindo* J = new jindo;
+    J->getSpecies();
+    J->getColor();
+    J->getName();
+    J->wagging();
+
+    return 0;
+}
